@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
+source "$BP_DIR/bin/lib/utils.sh"
+
+declare project_name
+
+project_name="$(get_project_name $1)"
+
+if [[ -f "$1/$project_name.csproj" && -f "$1/Program.cs" ]]; then
+	echo ".NET Core" && exit 0
+fi
+
+else
+	error <<-EOF
+	Application not supported by this buildpack!
+
+	An .NET Core Console App requires ${PROJECT_NAME}.csproj and Program.cs
+		files at the root of the directory structure.
+	EOF
+fi
+
+exit 1

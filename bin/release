@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# bin/release <build-dir>
+
+export BUILD_DIR=$1
+BP_DIR=$(cd $(dirname $0)/..; pwd)
+
+source "$BP_DIR/bin/lib/utils.sh"
+
+. $BUILD_DIR/.profile.d/dotnetcore.sh
+
+if [[ ! -f $BUILD_DIR/Procfile ]]; then
+cat <<EOF
+default_process_types:
+EOF
+echo "  worker: cd \$HOME/${APP_ASSEMBLY} && dotnet \"./${APP_ASSEMBLY}.dll\""
+fi
